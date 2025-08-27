@@ -196,3 +196,32 @@ function getDatabase() {
         request.onerror = event => reject(event.target.error);
     });
 }
+
+/**
+    Save InputFields current values to local storage
+    @param {string} fieldId - The ID of the input field to save 
+*/ 
+
+function saveInputField(fieldId) {
+    const value = document.getElementById(fieldId).value;
+    localStorage.setItem(fieldId, value);
+}   
+
+/**
+    Load InputFields values from local storage
+    @param {string} fieldId - The ID of the input field to load 
+*/      
+function loadInputField(fieldId) {
+    const value = localStorage.getItem(fieldId);
+    if (value) {
+        document.getElementById(fieldId).value = value;
+    }
+} 
+
+document.addEventListener('DOMContentLoaded', function() {
+const fieldIds = ['company', 'jobPosition', 'link'];
+fieldIds.forEach(fieldId => {  
+    loadInputField(fieldId);
+    document.getElementById(fieldId).addEventListener('input', () => saveInputField(fieldId));
+});
+});
