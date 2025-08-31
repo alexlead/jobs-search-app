@@ -53,9 +53,10 @@ async function loadJobs() {
     const db = await getDatabase();
     const transaction = db.transaction('Jobs', 'readonly');
     const store = transaction.objectStore('Jobs');
+    const index = store.index('CreateDate');
     
     filteredJobs = [];
-    const request = store.openCursor();
+    const request = index.openCursor(null, 'prev');
     
     request.onsuccess = event => {
         const cursor = event.target.result;
@@ -91,7 +92,7 @@ async function applyFilter() {
     }
     
     filteredJobs = [];
-    const request = range ? index.openCursor(range) : store.openCursor();
+    const request = range ? index.openCursor(range, 'prev') : store.openCursor();
     
     request.onsuccess = event => {
         const cursor = event.target.result;
@@ -152,7 +153,7 @@ function renderJobs() {
                         <td>${new Date(job.CreateDate).toLocaleDateString()}</td>
                         <td>${job.Company}</td>
                         <td>${job.JobPosition}</td>
-                        <td><a href="${job.Link}" target="_blank">${job.Link}</a></td>
+                        <td><a href="${job.Link}" class="short-text" target="_blank">${job.Link}</a></td>
                         <td>${statusMap.get(job.Status) || 'Unknown'}</td>
                     `;
                 });

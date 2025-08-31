@@ -1,64 +1,74 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <meta charset="utf-8">
-    <style>
-        body { width: 400px; padding: 10px; }
-        .tab { margin-bottom: 10px; }
-        .tab-button { 
-            padding: 10px; 
-            margin: 5px; 
-            cursor: pointer; 
-            border: 1px solid #ccc;
-            background: #f0f0f0;
-        }
-        .tab-button.active { background: #007bff; color: white; }
-        .tab-content { display: none; }
-        .tab-content.active { display: block; }
-        input, select { width: 100%; padding: 5px; margin: 5px 0; }
-        button { padding: 8px 15px; margin: 5px 0; }
-        table { width: 100%; border-collapse: collapse; }
-        th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
-        .header { 
-            display: flex; 
-            justify-content: space-between; 
-            align-items: center; 
-            margin-bottom: 10px; 
-        }
-        .options-btn { 
-            padding: 5px 10px; 
-            background: #6c757d; 
-            color: white; 
-            border: none; 
-            border-radius: 3px; 
-            cursor: pointer; 
-        }
-    </style>
+    <link rel="stylesheet" href="./assets/bootstrap/css/bootstrap.min.css">
+
+    <link rel="stylesheet" href="popup.css">
+    <title>Job Tracker</title>
 </head>
+
 <body>
     <div class="header">
         <h3 style="margin: 0;">Job Tracker</h3>
-        <button class="options-btn" id="options-btn">⚙️ Options</button>
+        <button type="button" class="btn btn-secondary" id="options-btn">Analytic Page</button>
     </div>
 
-    <div class="tab">
-        <button class="tab-button active" data-tab="search">Search</button>
-        <button class="tab-button" data-tab="add">Add</button>
+
+    <ul class="nav nav-tabs" role="tablist">
+        <li class="nav-item" role="presentation">
+            <button class="nav-link active" id="search-tab" data-bs-toggle="tab" data-bs-target="#search-tab-pane"
+                type="button" role="tab" aria-controls="search-tab-pane" aria-selected="true"><img src="./assets/bootstrap/icons/search.svg" class="icon-img"/> Search</button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="add-tab" data-bs-toggle="tab" data-bs-target="#add-tab-pane" type="button"
+                role="tab" aria-controls="add-tab-pane" aria-selected="false">Save Job</button>
+        </li>
+
+    </ul>
+    <div class="tab-content">
+        <div class="tab-pane fade show active" id="search-tab-pane" role="tabpanel" aria-labelledby="search-tab"
+            tabindex="0">
+            <div class="input-group mt-2 mb-2">
+
+                <input type="text" id="search-input" class="form-control" maxlength="100" placeholder="Search company or link...">
+                <button type="button" id="search-input-copy-btn" class="btn btn-outline-secondary" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Copy Input Field To Clipboard"><img src="./assets/bootstrap/icons/copy.svg" class="icon-img"/></button>
+                <button type="button" id="search-input-btn" class="btn btn-outline-secondary"  data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Copy Selected Text To Input Field"><img src="./assets/bootstrap/icons/cloud-download.svg" class="icon-img"/></button>
+                <button id="search-btn" class="btn btn-outline-secondary"  data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Search Company in DB"><img src="./assets/bootstrap/icons/search.svg" class="icon-img"/></button>
+            </div>
+            <div id="search-results"></div>
+        </div>
+        <div class="tab-pane fade" id="add-tab-pane" role="tabpanel" aria-labelledby="add-tab" tabindex="0">
+            <div class="input-group mt-2 mb-2">
+
+                <input type="text" id="company" class="form-control" maxlength="100" placeholder="Company">
+                <button type="button" id="company-copy-btn" class="btn btn-outline-secondary" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Copy Input Field To Clipboard"><img src="./assets/bootstrap/icons/copy.svg" class="icon-img"/></button>
+                <button type="button" id="company-btn" class="btn btn-outline-secondary" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Copy Selected Text To Input Field"><img src="./assets/bootstrap/icons/cloud-download.svg" class="icon-img"/></button>
+            </div>
+
+            <div class="input-group mb-2">
+
+                <input type="text" id="jobPosition" class="form-control" maxlength="100" placeholder="Job Position">
+                <button type="button" id="jobPosition-copy-btn" class="btn btn-outline-secondary" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Copy Input Field To Clipboard"><img src="./assets/bootstrap/icons/copy.svg" class="icon-img"/></button>
+                <button type="button" id="jobPosition-btn" class="btn btn-outline-secondary" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Copy Selected Text To Input Field"><img src="./assets/bootstrap/icons/cloud-download.svg" class="icon-img"/></button>
+            </div>
+            
+            <div class="input-group mb-2">
+                <input type="text" id="link" class="form-control" maxlength="300" placeholder="Link">
+                <button type="button" id="link-copy-btn" class="btn btn-outline-secondary" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Copy Input Field To Clipboard"><img src="./assets/bootstrap/icons/copy.svg" class="icon-img"/></button>
+                <button type="button" id="active-url-btn" class="btn btn-outline-secondary" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Copy URL To Input Field"><img src="./assets/bootstrap/icons/cloud-download.svg" class="icon-img"/></button>
+            </div>
+
+            <button id="save-btn" type="button" class="btn btn-primary"><img src="./assets/bootstrap/icons/save.svg" class="icon-img"/> Save</button>
+            <button id="clear-btn" type="button" class="btn btn-primary"><img src="./assets/bootstrap/icons/trash.svg" class="icon-img"/> Clear</button>
+        </div>
     </div>
 
-    <div id="search-tab" class="tab-content active">
-        <input type="text" id="search-input" placeholder="Search company or link...">
-        <button id="search-btn">Search</button>
-        <div id="search-results"></div>
-    </div>
 
-    <div id="add-tab" class="tab-content">
-        <input type="text" id="company" placeholder="Company">
-        <input type="text" id="jobPosition" placeholder="Job Position">
-        <input type="text" id="link" placeholder="Link">
-        <button id="save-btn">Save</button>
-    </div>
-
+    <script src="./assets/bootstrap/js/bootstrap.bundle.min.js"></script>
     <script src="popup.js"></script>
+
 </body>
+
 </html>
